@@ -1,0 +1,16 @@
+database:
+  image: mysql:8
+  environment:
+    - MYSQL_ROOT_PASSWORD=pass
+  volumes:
+    - ~/datadir:/var/lib/mysql
+catalog:
+  image: java8/catalog:latest
+  links:
+    - database:mysql
+  ports:
+    - 8080:8080
+apache:
+  image: httpd:2.4
+  ports:
+    - 80:80
