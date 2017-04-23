@@ -1,16 +1,22 @@
 database:
   image: mysql:8
+  container_name: database
   environment:
     - MYSQL_ROOT_PASSWORD=pass
+    - MYSQL_DATABASE=saracommerce
   volumes:
     - ~/datadir:/var/lib/mysql
-catalog:
-  image: java8/catalog:latest
-  links:
-    - database:mysql
   ports:
-    - 8080:8080
+    - 3306:3306
 apache:
   image: httpd:2.4
+  container_name: apache
   ports:
     - 80:80
+catalog:
+  image: java8/catalog:0.1.0
+  container_name: catalog
+  links:
+    - database:mysql_host
+  ports:
+    - 8080:8080
