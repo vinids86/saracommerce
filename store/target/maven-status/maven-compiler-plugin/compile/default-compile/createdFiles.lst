@@ -1,0 +1,11 @@
+br/com/saracommerce/department/controllers/resources/DepartmentResource.class
+br/com/saracommerce/department/controllers/DepartmentController.class
+br/com/saracommerce/department/controllers/resources/DepartmentResourceAssembler.class
+br/com/saracommerce/Application.class
+br/com/saracommerce/department/models/Department.class
+br/com/saracommerce/department/services/CRUDService.class
+br/com/saracommerce/department/controllers/DepartmentControllerAdvice.class
+br/com/saracommerce/department/exceptions/DepartmentNotFoundException.class
+br/com/saracommerce/department/repositories/DepartmentRepository.class
+br/com/saracommerce/department/services/DepartmentService.class
+br/com/saracommerce/department/services/DepartmentServiceImpl.class
