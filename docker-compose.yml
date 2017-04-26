@@ -13,10 +13,24 @@ apache:
   container_name: apache
   ports:
     - 80:80
-catalog:
-  image: java8/catalog:0.1.0
-  container_name: catalog
-  links:
-    - database:mysql_host
+#store:
+#  image: java8/store
+#  container_name: store
+#  links:
+#    - database:mysql_host
+#  ports:
+#    - 8088:8088
+search:
+  image: es:latest
+  container_name: search
   ports:
-    - 8080:8080
+    - 9200:9200
+    - 9300:9300
+  volumes:
+    - ~/esdata:/elasticsearch/data
+jenkins:
+    image: jenkins:2.46.1
+    container_name: jenkins
+    ports:
+      - 8080:8080
+      - 5000:5000
