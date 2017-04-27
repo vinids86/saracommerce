@@ -2,8 +2,16 @@
 E-commerce
 
 ## Pré-requisitos
-- criar o diretório ~/datadir
+- criar os diretórios
+  - ~/esdata
+  - ~/datadir
 - ter o [docker](https://www.docker.com/) instalado
 
+## Tecnologias utilizadas
+Spring Boot, Spring Data, Spring HATEOAS, MYSQL, Jenkins, ElasticSearch
+
 ## Run
-Apenas executar o comando *docker-compose up* no diretório inicial ;)
+1. Crie a imagem do store:
+  * cd store
+  * mvn clean package
+2. No diretório raiz executar *docker-compose up -d*
