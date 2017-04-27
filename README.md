@@ -7,8 +7,11 @@ E-commerce
   - ~/datadir
 - ter o [docker](https://www.docker.com/) instalado
 
+## Tecnologias utilizadas
+Spring Boot, Spring Data, Spring HATEOAS, MYSQL, Jenkins, ElasticSearch
+
 ## Run
 1. Crie a imagem do store:
-  i. cd store
-  ii. mvn clean package
+  * cd store
+  * mvn clean package
 2. No diretório raiz executar *docker-compose up -d*
