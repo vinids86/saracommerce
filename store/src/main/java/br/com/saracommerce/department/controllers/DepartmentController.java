@@ -52,7 +52,7 @@ public class DepartmentController {
     public ResponseEntity<Void> updateDepartment(@RequestBody Department department, Pageable pageable) {
         validateDepartment(department.getId());
         service.save(department);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.noContent().build();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -60,7 +60,7 @@ public class DepartmentController {
         Department department = validateDepartment(id);
         final DepartmentResource resource = departmentResourceAssembler.toResource(department);
         logger.debug("Found Department::" + resource);
-        return new ResponseEntity<>(resource, HttpStatus.OK);
+        return ResponseEntity.ok(resource);
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -78,7 +78,7 @@ public class DepartmentController {
         validateDepartment(id);
         service.delete(id);
         logger.debug("Department with id " + id + " deleted");
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 
     private Department validateDepartment(final Long id) {
