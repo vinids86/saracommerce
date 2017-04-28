@@ -10,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedResources;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,22 +40,25 @@ public class DepartmentController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<DepartmentResource> addDepartment(@RequestBody Department department) {
-        final DepartmentResource resource = departmentResourceAssembler.toResource(service.save(department));
-        logger.info("Added::" + resource);
+
+
+        final Department departmentSave = service.save(department);
+        final DepartmentResource resource = departmentResourceAssembler.toResource(departmentSave);
+        logger.info("Added::" + departmentSave);
         return ResponseEntity.created(URI.create(resource.getLink("self").getHref())).build();
 
     }
 
     @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity<Void> updateDepartment(@RequestBody Department department, Pageable pageable) {
-        validateDepartment(department.getId());
+        findDepartmentAndValidate(department.getId());
         service.save(department);
         return ResponseEntity.noContent().build();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<DepartmentResource> getDepartment(@PathVariable("id") Long id) {
-        Department department = validateDepartment(id);
+        Department department = findDepartmentAndValidate(id);
         final DepartmentResource resource = departmentResourceAssembler.toResource(department);
         logger.debug("Found Department::" + resource);
         return ResponseEntity.ok(resource);
@@ -75,13 +76,13 @@ public class DepartmentController {
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> deleteDepartment(@PathVariable("id") Long id) {
-        validateDepartment(id);
+        findDepartmentAndValidate(id);
         service.delete(id);
         logger.debug("Department with id " + id + " deleted");
         return ResponseEntity.ok().build();
     }
 
-    private Department validateDepartment(final Long id) {
+    private Department findDepartmentAndValidate(final Long id) {
         return service.getById(id)
                 .orElseThrow(() -> new DepartmentNotFoundException(id));
     }
