@@ -1,4 +1,4 @@
-package br.com.saracommerce.department.models;
+package br.com.saracommerce.product.models;
 
 /**
  * Created by vinicius on 27/04/17.

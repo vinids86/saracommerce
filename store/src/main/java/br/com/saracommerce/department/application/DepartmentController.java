@@ -1,18 +1,24 @@
-package br.com.saracommerce.department.controllers;
+package br.com.saracommerce.department.application;
 
-import br.com.saracommerce.department.controllers.resources.DepartmentResource;
-import br.com.saracommerce.department.controllers.resources.DepartmentResourceAssembler;
-import br.com.saracommerce.department.exceptions.DepartmentNotFoundException;
+import br.com.saracommerce.department.application.resources.DepartmentResourceAssembler;
+import br.com.saracommerce.department.infrastructure.exceptions.DepartmentNotFoundException;
 import br.com.saracommerce.department.models.Department;
 import br.com.saracommerce.department.services.DepartmentService;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.hateoas.PagedResources;
+import org.springframework.hateoas.Resource;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 
@@ -21,29 +27,24 @@ import java.net.URI;
  */
 
 @RestController
+@ExposesResourceFor(Department.class)
+@RequiredArgsConstructor
 @RequestMapping(value = "/department")
 public class DepartmentController {
 
     private final static Logger logger = Logger.getLogger(DepartmentController.class);
 
-
-    private final DepartmentService service;
-    private DepartmentResourceAssembler departmentResourceAssembler;
-    private PagedResourcesAssembler<Department> pageAssembler;
-
-    @Autowired
-    public DepartmentController(DepartmentService service, DepartmentResourceAssembler departmentResourceAssembler, PagedResourcesAssembler<Department> pageAssembler) {
-        this.service = service;
-        this.departmentResourceAssembler = departmentResourceAssembler;
-        this.pageAssembler = pageAssembler;
-    }
+    private final @NonNull
+    DepartmentService service;
+    private final @NonNull
+    DepartmentResourceAssembler departmentResourceAssembler;
+    private final @NonNull
+    PagedResourcesAssembler<Department> pageAssembler;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<DepartmentResource> addDepartment(@RequestBody Department department) {
-
-
+    public ResponseEntity<Resource> addDepartment(@RequestBody Department department) {
         final Department departmentSave = service.save(department);
-        final DepartmentResource resource = departmentResourceAssembler.toResource(departmentSave);
+        final Resource resource = departmentResourceAssembler.toResource(departmentSave);
         logger.info("Added::" + departmentSave);
         return ResponseEntity.created(URI.create(resource.getLink("self").getHref())).build();
 
@@ -52,25 +53,26 @@ public class DepartmentController {
     @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity<Void> updateDepartment(@RequestBody Department department, Pageable pageable) {
         findDepartmentAndValidate(department.getId());
-        service.save(department);
+        final Department departmentSave = service.save(department);
+        logger.info("Added::" + departmentSave);
         return ResponseEntity.noContent().build();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<DepartmentResource> getDepartment(@PathVariable("id") Long id) {
+    public ResponseEntity<Resource> getDepartment(@PathVariable("id") Long id) {
         Department department = findDepartmentAndValidate(id);
-        final DepartmentResource resource = departmentResourceAssembler.toResource(department);
-        logger.debug("Found Department::" + resource);
+        final Resource resource = departmentResourceAssembler.toResource(department);
+        logger.debug("Found Department::" + department);
         return ResponseEntity.ok(resource);
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<PagedResources<DepartmentResource>> getAllDepartments(Pageable pageable) {
+    public ResponseEntity<PagedResources<Resource>> getAllDepartments(Pageable pageable) {
         final Page<Department> departments = service.getAll(pageable);
 
-        final PagedResources<DepartmentResource> resources = pageAssembler.toResource(departments, departmentResourceAssembler);
+        final PagedResources<Resource> resources = pageAssembler.toResource(departments, departmentResourceAssembler);
         logger.debug("Found " + departments.getTotalElements() + " departments");
-        logger.debug(resources);
+        logger.debug(departments);
         return ResponseEntity.ok(resources);
     }
 

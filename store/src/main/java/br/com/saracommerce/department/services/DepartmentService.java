@@ -1,5 +1,6 @@
 package br.com.saracommerce.department.services;
 
+import br.com.saracommerce.core.service.CRUDService;
 import br.com.saracommerce.department.models.Department;
 
 /**

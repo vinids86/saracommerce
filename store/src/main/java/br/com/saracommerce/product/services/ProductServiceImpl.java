@@ -1,7 +1,7 @@
-package br.com.saracommerce.department.services;
+package br.com.saracommerce.product.services;
 
-import br.com.saracommerce.department.models.Department;
-import br.com.saracommerce.department.repositories.DepartmentRepository;
+import br.com.saracommerce.product.ProductRepository;
+import br.com.saracommerce.product.models.Product;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -12,28 +12,28 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 /**
- * Created by vinicius on 25/04/17.
+ * Created by vinicius on 29/04/17.
  */
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class DepartmentServiceImpl implements DepartmentService {
+public class ProductServiceImpl implements ProductService {
 
     private final @NonNull
-    DepartmentRepository repository;
+    ProductRepository repository;
 
     @Override
-    public Department save(Department department) {
-        return repository.save(department);
+    public Product save(Product product) {
+        return repository.save(product);
     }
 
     @Override
-    public Optional<Department> getById(Long id) {
+    public Optional<Product> getById(Long id) {
         return Optional.ofNullable(repository.findById(id));
     }
 
     @Override
-    public Page<Department> getAll(Pageable pageable) {
+    public Page<Product> getAll(Pageable pageable) {
         return repository.findAll(pageable);
     }
 

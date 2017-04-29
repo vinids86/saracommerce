@@ -13,6 +13,8 @@ apache:
   container_name: apache
   ports:
     - 80:80
+  volumes:
+    - ./storeJs:/usr/local/apache2/htdocs/
 #store:
 #  image: java8/store
 #  container_name: store

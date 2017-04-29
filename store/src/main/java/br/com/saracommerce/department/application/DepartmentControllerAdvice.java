@@ -1,6 +1,6 @@
-package br.com.saracommerce.department.controllers;
+package br.com.saracommerce.department.application;
 
-import br.com.saracommerce.department.exceptions.DepartmentNotFoundException;
+import br.com.saracommerce.department.infrastructure.exceptions.DepartmentNotFoundException;
 import org.springframework.hateoas.VndErrors;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
