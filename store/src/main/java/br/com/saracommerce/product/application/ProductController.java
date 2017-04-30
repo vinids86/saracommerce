@@ -34,12 +34,9 @@ public class ProductController {
 
     private final static Logger logger = Logger.getLogger(ProductController.class);
 
-    private final @NonNull
-    ProductService service;
-    private final @NonNull
-    ProductResourceAssembler productResourceAssembler;
-    private final @NonNull
-    PagedResourcesAssembler<Product> pageAssembler;
+    private final @NonNull ProductService service;
+    private final @NonNull ProductResourceAssembler productResourceAssembler;
+    private final @NonNull PagedResourcesAssembler<Product> pageAssembler;
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Resource> addProduct(@RequestBody Product product) {

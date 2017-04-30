@@ -1,7 +1,7 @@
 package br.com.saracommerce.department.application.resources;
 
 import br.com.saracommerce.department.application.DepartmentController;
-import br.com.saracommerce.department.models.Department;
+import br.com.saracommerce.department.models.Category;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityLinks;
@@ -10,23 +10,23 @@ import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Service;
 
 /**
- * Created by vinicius on 25/04/17.
+ * Created by vinicius on 30/04/17.
  */
 @Service
-public class DepartmentResourceAssembler extends ResourceAssemblerSupport<Department, Resource> {
+public class CategoryResourceAssembler extends ResourceAssemblerSupport<Category, Resource> {
 
     private final @NonNull EntityLinks entityLinks;
 
     @Autowired
-    public DepartmentResourceAssembler(EntityLinks entityLinks) {
+    public CategoryResourceAssembler(EntityLinks entityLinks) {
         super(DepartmentController.class, Resource.class);
         this.entityLinks = entityLinks;
     }
 
     @Override
-    public Resource<Department> toResource(Department department) {
-        final Resource<Department> departmentResource = new Resource<>(department);
-        departmentResource.add(entityLinks.linkToSingleResource(department));
-        return departmentResource;
+    public Resource toResource(Category category) {
+        final Resource<Category> categoryResource = new Resource<>(category);
+        categoryResource.add(entityLinks.linkToSingleResource(category));
+        return categoryResource;
     }
 }

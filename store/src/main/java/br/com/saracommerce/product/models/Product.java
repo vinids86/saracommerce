@@ -8,10 +8,9 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -30,16 +29,12 @@ import java.util.List;
 @Table(name = "product")
 public class Product extends AbstractEntity {
 
-    @Id
-    @GeneratedValue
-    private Long id;
-
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
     private List<Price> price;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "sub_category_id")
     private SubCategory subCategory;
 }

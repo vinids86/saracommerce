@@ -15,8 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductResourceAssembler extends ResourceAssemblerSupport<Product, Resource> {
 
-    private final @NonNull
-    EntityLinks entityLinks;
+    private final @NonNull EntityLinks entityLinks;
 
     @Autowired
     public ProductResourceAssembler(EntityLinks entityLinks) {

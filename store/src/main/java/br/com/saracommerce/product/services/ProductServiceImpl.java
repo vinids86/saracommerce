@@ -1,7 +1,7 @@
 package br.com.saracommerce.product.services;
 
-import br.com.saracommerce.product.ProductRepository;
 import br.com.saracommerce.product.models.Product;
+import br.com.saracommerce.product.repositories.ProductRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,8 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
-    private final @NonNull
-    ProductRepository repository;
+    private final @NonNull ProductRepository repository;
 
     @Override
     public Product save(Product product) {
@@ -29,7 +28,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Optional<Product> getById(Long id) {
-        return Optional.ofNullable(repository.findById(id));
+        return repository.findById(id);
     }
 
     @Override

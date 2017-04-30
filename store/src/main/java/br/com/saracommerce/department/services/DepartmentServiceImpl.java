@@ -19,8 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class DepartmentServiceImpl implements DepartmentService {
 
-    private final @NonNull
-    DepartmentRepository repository;
+    private final @NonNull DepartmentRepository repository;
 
     @Override
     public Department save(Department department) {
@@ -28,11 +27,13 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Department> getById(Long id) {
-        return Optional.ofNullable(repository.findById(id));
+        return repository.findById(id);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<Department> getAll(Pageable pageable) {
         return repository.findAll(pageable);
     }

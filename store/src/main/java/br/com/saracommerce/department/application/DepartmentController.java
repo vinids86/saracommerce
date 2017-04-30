@@ -29,17 +29,14 @@ import java.net.URI;
 @RestController
 @ExposesResourceFor(Department.class)
 @RequiredArgsConstructor
-@RequestMapping(value = "/department")
+@RequestMapping(value = "/departments")
 public class DepartmentController {
 
     private final static Logger logger = Logger.getLogger(DepartmentController.class);
 
-    private final @NonNull
-    DepartmentService service;
-    private final @NonNull
-    DepartmentResourceAssembler departmentResourceAssembler;
-    private final @NonNull
-    PagedResourcesAssembler<Department> pageAssembler;
+    private final @NonNull DepartmentService service;
+    private final @NonNull DepartmentResourceAssembler departmentResourceAssembler;
+    private final @NonNull PagedResourcesAssembler<Department> pageAssembler;
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Resource> addDepartment(@RequestBody Department department) {
@@ -47,7 +44,6 @@ public class DepartmentController {
         final Resource resource = departmentResourceAssembler.toResource(departmentSave);
         logger.info("Added::" + departmentSave);
         return ResponseEntity.created(URI.create(resource.getLink("self").getHref())).build();
-
     }
 
     @RequestMapping(method = RequestMethod.PUT)
@@ -69,14 +65,13 @@ public class DepartmentController {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<PagedResources<Resource>> getAllDepartments(Pageable pageable) {
         final Page<Department> departments = service.getAll(pageable);
-
         final PagedResources<Resource> resources = pageAssembler.toResource(departments, departmentResourceAssembler);
         logger.debug("Found " + departments.getTotalElements() + " departments");
         logger.debug(departments);
         return ResponseEntity.ok(resources);
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> deleteDepartment(@PathVariable("id") Long id) {
         findDepartmentAndValidate(id);
         service.delete(id);

@@ -25,8 +25,7 @@ public class AbstractEntity implements Identifiable<Long> {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonIgnore
     Long id;
-    private @Version
-    Long version;
+    private @Version Long version;
 
     protected AbstractEntity() {
         this.id = null;

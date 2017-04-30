@@ -11,11 +11,10 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 
 /**
  * Created by vinicius on 27/04/17.
@@ -29,9 +28,7 @@ import javax.persistence.Table;
 @Table(name = "price")
 public class Price extends AbstractEntity {
 
-    @Id
-    @GeneratedValue
-    private Long id;
+    private BigDecimal value;
 
     @Enumerated(EnumType.STRING)
     private TypePrice type;
