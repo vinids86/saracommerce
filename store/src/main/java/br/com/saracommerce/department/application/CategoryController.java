@@ -14,9 +14,12 @@ import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.net.URI;
 
 /**
  * Created by vinicius on 30/04/17.
@@ -41,5 +44,36 @@ public class CategoryController {
         logger.debug("Found " + categories.getTotalElements() + " categories");
         logger.debug(categories);
         return ResponseEntity.ok(resources);
+    }
+
+    @RequestMapping(value = "/{departmentId}/categories/{categoryId}", method = RequestMethod.GET)
+    public ResponseEntity<Resource> getCategoryByDepartment(@PathVariable("departmentId") Long departmentId, @PathVariable("categoryId") Long categoryId) {
+        Category category = service.getCategoryByDepartamentIdAndCategory(departmentId, categoryId);
+        final Resource resource = categoryResourceAssembler.toResource(category);
+        logger.debug("Found Category::" + category);
+        return ResponseEntity.ok(resource);
+    }
+
+    @RequestMapping(value = "/{departmentId}/categories", method = RequestMethod.PUT)
+    public ResponseEntity<Void> updateCategory(@PathVariable("departmentId") Long departmentId, @RequestBody Category category, Pageable pageable) {
+        final Category categorySaved = service.save(category, departmentId);
+        logger.info("Added::" + categorySaved);
+        return ResponseEntity.noContent().build();
+    }
+
+    @RequestMapping(value = "/{departmentId}/categories/{categoryId}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> deleteCategory(@PathVariable("departmentId") Long departmentId, @PathVariable("categoryId") Long categoryId) {
+        final Category category = service.getCategoryByDepartamentIdAndCategory(departmentId, categoryId);
+        service.delete(category, departmentId);
+        logger.debug("Department with categoryId " + categoryId + " deleted");
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/{departmentId}/categories", method = RequestMethod.POST)
+    public ResponseEntity<Resource> addCategory(@PathVariable("departmentId") Long departmentId, @RequestBody Category category) {
+        final Category categorySaved = service.save(category, departmentId);
+        final Resource resource = categoryResourceAssembler.toResource(categorySaved);
+        logger.info("Added::" + categorySaved);
+        return ResponseEntity.created(URI.create(resource.getLink("self").getHref())).build();
     }
 }

@@ -1,7 +1,6 @@
 package br.com.saracommerce.department.application;
 
 import br.com.saracommerce.department.application.resources.DepartmentResourceAssembler;
-import br.com.saracommerce.department.infrastructure.exceptions.DepartmentNotFoundException;
 import br.com.saracommerce.department.models.Department;
 import br.com.saracommerce.department.services.DepartmentService;
 import lombok.NonNull;
@@ -40,23 +39,23 @@ public class DepartmentController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Resource> addDepartment(@RequestBody Department department) {
-        final Department departmentSave = service.save(department);
-        final Resource resource = departmentResourceAssembler.toResource(departmentSave);
-        logger.info("Added::" + departmentSave);
+        final Department departmentSaved = service.save(department);
+        final Resource resource = departmentResourceAssembler.toResource(departmentSaved);
+        logger.info("Added::" + departmentSaved);
         return ResponseEntity.created(URI.create(resource.getLink("self").getHref())).build();
     }
 
     @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity<Void> updateDepartment(@RequestBody Department department, Pageable pageable) {
-        findDepartmentAndValidate(department.getId());
-        final Department departmentSave = service.save(department);
-        logger.info("Added::" + departmentSave);
+        service.getById(department.getId());
+        final Department departmentSaved = service.save(department);
+        logger.info("Added::" + departmentSaved);
         return ResponseEntity.noContent().build();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Resource> getDepartment(@PathVariable("id") Long id) {
-        Department department = findDepartmentAndValidate(id);
+        Department department = service.getById(id);
         final Resource resource = departmentResourceAssembler.toResource(department);
         logger.debug("Found Department::" + department);
         return ResponseEntity.ok(resource);
@@ -73,14 +72,9 @@ public class DepartmentController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> deleteDepartment(@PathVariable("id") Long id) {
-        findDepartmentAndValidate(id);
+        service.getById(id);
         service.delete(id);
         logger.debug("Department with id " + id + " deleted");
         return ResponseEntity.ok().build();
-    }
-
-    private Department findDepartmentAndValidate(final Long id) {
-        return service.getById(id)
-                .orElseThrow(() -> new DepartmentNotFoundException(id));
     }
 }

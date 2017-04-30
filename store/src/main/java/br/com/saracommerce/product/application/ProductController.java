@@ -1,7 +1,6 @@
 package br.com.saracommerce.product.application;
 
 import br.com.saracommerce.product.application.resources.ProductResourceAssembler;
-import br.com.saracommerce.product.infrastructure.exceptions.ProductNotFoundException;
 import br.com.saracommerce.product.models.Product;
 import br.com.saracommerce.product.services.ProductService;
 import lombok.NonNull;
@@ -49,14 +48,14 @@ public class ProductController {
 
     @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity<Void> updateProduct(@RequestBody Product product, Pageable pageable) {
-        findProductAndValidate(product.getId());
+        service.getById(product.getId());
         service.save(product);
         return ResponseEntity.noContent().build();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Resource> getProduct(@PathVariable("id") Long id) {
-        Product product = findProductAndValidate(id);
+        Product product = service.getById(id);
         final Resource resource = productResourceAssembler.toResource(product);
         logger.debug("Found Product::" + resource);
         return ResponseEntity.ok(resource);
@@ -74,14 +73,9 @@ public class ProductController {
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id) {
-        findProductAndValidate(id);
+        service.getById(id);
         service.delete(id);
         logger.debug("Product with id " + id + " deleted");
         return ResponseEntity.ok().build();
-    }
-
-    private Product findProductAndValidate(final Long id) {
-        return service.getById(id)
-                .orElseThrow(() -> new ProductNotFoundException(id));
     }
 }

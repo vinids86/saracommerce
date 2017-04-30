@@ -1,5 +1,6 @@
 package br.com.saracommerce.product.services;
 
+import br.com.saracommerce.product.infrastructure.exceptions.ProductNotFoundException;
 import br.com.saracommerce.product.models.Product;
 import br.com.saracommerce.product.repositories.ProductRepository;
 import lombok.NonNull;
@@ -9,26 +10,25 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 /**
  * Created by vinicius on 29/04/17.
  */
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
     private final @NonNull ProductRepository repository;
 
     @Override
+    @Transactional
     public Product save(Product product) {
         return repository.save(product);
     }
 
     @Override
-    public Optional<Product> getById(Long id) {
-        return repository.findById(id);
+    public Product getById(Long id) {
+        return repository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
     }
 
     @Override
@@ -37,6 +37,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         repository.delete(id);
     }

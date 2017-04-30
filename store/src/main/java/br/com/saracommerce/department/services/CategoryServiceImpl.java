@@ -1,7 +1,10 @@
 package br.com.saracommerce.department.services;
 
+import br.com.saracommerce.department.infrastructure.exceptions.CategoryNotFoundException;
+import br.com.saracommerce.department.infrastructure.exceptions.DepartmentNotFoundException;
 import br.com.saracommerce.department.models.Category;
 import br.com.saracommerce.department.repositories.CategoryRepository;
+import br.com.saracommerce.department.repositories.DepartmentRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -9,40 +12,44 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 /**
  * Created by vinicius on 30/04/17.
  */
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
-    private final @NonNull CategoryRepository repository;
+    private final @NonNull CategoryRepository categoryRepository;
+    private final @NonNull DepartmentRepository departmentRepository;
 
     @Override
-    public Category save(Category entity) {
-        return repository.save(entity);
+    @Transactional
+    public Category save(Category category, Long departmentId) {
+        findCategoryAndValidate(category, departmentId);
+        return categoryRepository.save(category);
     }
 
     @Override
-    public Optional<Category> getById(Long id) {
-        return repository.findById(id);
+    public Category getCategoryByDepartamentIdAndCategory(Long departmentId, Long categoryId) {
+        return categoryRepository.getCategoryByDepartmentIdAndId(departmentId,
+                categoryId).orElseThrow(() -> new CategoryNotFoundException(departmentId, categoryId));
     }
 
     @Override
-    public Page<Category> getAll(Pageable pageable) {
-        return repository.findAll(pageable);
+    @Transactional
+    public void delete(Category category, Long departmentId) {
+        findCategoryAndValidate(category, departmentId);
+        categoryRepository.delete(category.getId());
     }
-
-    @Override
-    public void delete(Long id) {
-        repository.delete(id);
-    }
-
 
     @Override
     public Page<Category> getCategoriesByDepartment(Long id, Pageable pageable) {
-        return repository.getCategoriesByDepartmentId(id, pageable);
+        return categoryRepository.getCategoriesByDepartmentId(id, pageable);
+    }
+
+    private void findCategoryAndValidate(Category category, Long departmentId) {
+        category.setDepartment(
+                departmentRepository.findById(departmentId)
+                        .orElseThrow(() -> new DepartmentNotFoundException(departmentId)));
     }
 }
