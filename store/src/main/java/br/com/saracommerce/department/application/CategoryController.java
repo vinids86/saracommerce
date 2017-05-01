@@ -47,23 +47,23 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "/{departmentId}/categories/{categoryId}", method = RequestMethod.GET)
-    public ResponseEntity<Resource> getCategoryByDepartment(@PathVariable("departmentId") Long departmentId, @PathVariable("categoryId") Long categoryId) {
-        Category category = service.getCategoryByDepartamentIdAndCategory(departmentId, categoryId);
+    public ResponseEntity<Resource> getCategoryByDepartment(@PathVariable Long departmentId, @PathVariable("categoryId") Long categoryId) {
+        Category category = service.getCategoryByDepartamentAndCategoryId(departmentId, categoryId);
         final Resource resource = categoryResourceAssembler.toResource(category);
         logger.debug("Found Category::" + category);
         return ResponseEntity.ok(resource);
     }
 
     @RequestMapping(value = "/{departmentId}/categories", method = RequestMethod.PUT)
-    public ResponseEntity<Void> updateCategory(@PathVariable("departmentId") Long departmentId, @RequestBody Category category, Pageable pageable) {
+    public ResponseEntity<Void> updateCategory(@PathVariable Long departmentId, @RequestBody Category category, Pageable pageable) {
         final Category categorySaved = service.save(category, departmentId);
         logger.info("Added::" + categorySaved);
         return ResponseEntity.noContent().build();
     }
 
     @RequestMapping(value = "/{departmentId}/categories/{categoryId}", method = RequestMethod.DELETE)
-    public ResponseEntity<Void> deleteCategory(@PathVariable("departmentId") Long departmentId, @PathVariable("categoryId") Long categoryId) {
-        final Category category = service.getCategoryByDepartamentIdAndCategory(departmentId, categoryId);
+    public ResponseEntity<Void> deleteCategory(@PathVariable Long departmentId, @PathVariable("categoryId") Long categoryId) {
+        final Category category = service.getCategoryByDepartamentAndCategoryId(departmentId, categoryId);
         service.delete(category, departmentId);
         logger.debug("Department with categoryId " + categoryId + " deleted");
         return ResponseEntity.ok().build();

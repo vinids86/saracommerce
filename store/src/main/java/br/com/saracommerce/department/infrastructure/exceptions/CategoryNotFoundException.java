@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.NOT_FOUND)
 public class CategoryNotFoundException extends RuntimeException {
     public CategoryNotFoundException(Long departmentId, Long categoryId) {
-        super("Category in " + departmentId + " with " + categoryId + " does not exists");
+        super("Category in Department with id " + departmentId + " and Category with id " + categoryId + " does not exists");
     }
 }
 

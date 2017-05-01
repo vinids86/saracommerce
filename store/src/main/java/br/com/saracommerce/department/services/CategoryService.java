@@ -12,7 +12,7 @@ public interface CategoryService {
 
     Category save(Category category, Long departmentId);
 
-    Category getCategoryByDepartamentIdAndCategory(Long departmentId, Long categoryId);
+    Category getCategoryByDepartamentAndCategoryId(Long departmentId, Long categoryId);
 
     void delete(Category category, Long departmentId);
 }

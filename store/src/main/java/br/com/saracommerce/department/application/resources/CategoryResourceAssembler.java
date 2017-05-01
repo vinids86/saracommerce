@@ -1,6 +1,6 @@
 package br.com.saracommerce.department.application.resources;
 
-import br.com.saracommerce.department.application.DepartmentController;
+import br.com.saracommerce.department.application.CategoryController;
 import br.com.saracommerce.department.models.Category;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class CategoryResourceAssembler extends ResourceAssemblerSupport<Category
 
     @Autowired
     public CategoryResourceAssembler(EntityLinks entityLinks) {
-        super(DepartmentController.class, Resource.class);
+        super(CategoryController.class, Resource.class);
         this.entityLinks = entityLinks;
     }
 
