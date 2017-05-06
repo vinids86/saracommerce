@@ -7,7 +7,6 @@ import br.com.saracommerce.core.ResourceAssemblerSupportStore;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityLinks;
-import org.springframework.hateoas.ResourceSupport;
 import org.springframework.stereotype.Service;
 
 /**

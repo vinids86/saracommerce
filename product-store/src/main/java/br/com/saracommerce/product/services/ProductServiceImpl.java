@@ -33,7 +33,7 @@ public class ProductServiceImpl implements ProductService {
         product.getCategories().forEach(category -> categoryRepository.findOne(category.getId()));
 
         Set<Category> categories = new HashSet<>();
-        for(Category category : product.getCategories()) {
+        for (Category category : product.getCategories()) {
             categories.add(categoryRepository.findOne(category.getId()));
         }
         product.setCategories(categories);

@@ -24,7 +24,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
 @ToString(callSuper = true)
 @Entity
 @Table(name = "PRODUCT")

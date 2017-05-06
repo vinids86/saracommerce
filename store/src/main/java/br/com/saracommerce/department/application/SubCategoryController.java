@@ -56,6 +56,7 @@ public class SubCategoryController {
         SubCategory subCategory = service.getSubCategoryByDepartamentAndCategoryAndSubCategoryId(departmentId, categoryId, subCategoryId);
         final Resource resource = subCategoryResourceAssembler.toResource(subCategory);
         logger.debug("Found Category::" + subCategory);
+
         return ResponseEntity.ok(resource);
     }
 

@@ -1,6 +1,5 @@
 package br.com.saracommerce.core;
 
-import br.com.saracommerce.category.vo.CategoryVO;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;

@@ -46,7 +46,7 @@ public class DepartmentController {
     }
 
     @RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity<Void> updateDepartment(@RequestBody Department department, Pageable pageable) {
+    public ResponseEntity<Void> updateDepartment(@RequestBody Department department) {
         service.getById(department.getId());
         final Department departmentSaved = service.save(department);
         logger.info("Added::" + departmentSaved);

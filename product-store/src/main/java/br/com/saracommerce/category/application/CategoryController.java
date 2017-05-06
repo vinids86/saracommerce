@@ -1,9 +1,9 @@
 package br.com.saracommerce.category.application;
 
-import br.com.saracommerce.category.assemblers.CategoryResourceAssembler;
-import br.com.saracommerce.category.assemblers.CategoryVOAssembler;
 import br.com.saracommerce.category.application.resources.CategoryRequest;
 import br.com.saracommerce.category.application.resources.CategoryResponse;
+import br.com.saracommerce.category.assemblers.CategoryResourceAssembler;
+import br.com.saracommerce.category.assemblers.CategoryVOAssembler;
 import br.com.saracommerce.category.services.CategoryService;
 import br.com.saracommerce.category.vo.CategoryVO;
 import lombok.NonNull;
